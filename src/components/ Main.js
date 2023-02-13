@@ -19,13 +19,15 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
         setUserDescription(user.about);
         setUserAvatar(user.avatar);
         setCards(cards);
-        setIsLoaded(true)
+
       })
       .catch((err) => {
         setLoadingError(`Что-то пошло не так... (${err})`)
         console.log(err);
-      })
-  })
+      }).finally(() => {
+        userName ? setIsLoaded(true) : setIsLoaded(true)
+    })
+  }, [])
 
   return (
     <>
@@ -35,16 +37,16 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
         <section className="profile">
           <div className="profile__avatar-container">
             <img src={userAvatar} alt="Аватарка" className="profile__avatar" />
-            <img onClick={onEditProfile} className="profile__updavatar-button" src="/images/icon-pencil.svg"
+            <img onClick={onEditAvatar} className="profile__updavatar-button" src="/images/icon-pencil.svg"
                  alt="edit-pencil"/>
           </div>
 
           <div className="profile__info">
             <h1 className="profile__name">{userName}</h1>
-            <button onClick={onAddPlace} type="button" className="profile__edit-button opacity"></button>
+            <button onClick={onEditProfile} type="button" className="profile__edit-button opacity"></button>
             <p className="profile__job">{userDescription}</p>
           </div>
-          <button onClick={onEditAvatar} type="button" className="profile__add-button opacity"></button>
+          <button onClick={onAddPlace} type="button" className="profile__add-button opacity"></button>
         </section>
 
         <Card cards={cards} onCardClick={onCardClick}/>

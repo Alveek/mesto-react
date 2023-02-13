@@ -9,10 +9,10 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const handleCardClick = (data) => {
-    setSelectedCard(data)
+    setSelectedCard(data);
   };
 
   const handleEditAvatarClick = () => {
@@ -20,18 +20,19 @@ function App() {
   };
 
   const handleEditProfileClick = () => {
-    setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
+    setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
+
   };
 
   const handleAddPlaceClick = () => {
-    setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
+    setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   };
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setSelectedCard([]);
+    setSelectedCard(null);
   };
 
   return (
@@ -44,7 +45,7 @@ function App() {
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
       <PopupWithForm title="Редактировать профиль" name="profile-info"
-                     isOpen={isEditProfilePopupOpen ? 'popup_opened' : 'popup_hidden'} onClose={closeAllPopups}>
+                     isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} buttonText="Сохранить">
         <input
           className="form__input form__input_user_name"
           id="user-name-input"
@@ -69,11 +70,10 @@ function App() {
           required
         />
         <span className="form__input-error user-job-input-error"></span>
-        <button className="form__button" type="submit">Сохранить</button>
       </PopupWithForm>
 
-      <PopupWithForm title="Новое место" name="add-card" isOpen={isAddPlacePopupOpen ? 'popup_opened' : 'popup_hidden'}
-                     onClose={closeAllPopups}>
+      <PopupWithForm title="Новое место" name="add-card" isOpen={isAddPlacePopupOpen}
+                     onClose={closeAllPopups} buttonText="Создать">
         <input
           className="form__input form__input_card_name"
           id="card-name-input"
@@ -96,11 +96,10 @@ function App() {
           required
         />
         <span className="form__input-error card-link-input-error"></span>
-        <button className="form__button" type="submit">Создать</button>
       </PopupWithForm>
 
       <PopupWithForm title="Обновить аватар" name="update-avatar"
-                     isOpen={isEditAvatarPopupOpen ? 'popup_opened' : 'popup_hidden'} onClose={closeAllPopups}>
+                     isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} buttonText="Сохранить">
         <input
           className="form__input form__input_avatar_link"
           id="avatar-link-input"
@@ -111,11 +110,9 @@ function App() {
           required
         />
         <span className="form__input-error avatar-link-input-error"></span>
-        <button className="form__button" type="submit">Сохранить</button>
       </PopupWithForm>
 
-      <PopupWithForm title="Вы уверены?" name="delete-card">
-        <button className="form__button" type="submit">Да</button>
+      <PopupWithForm title="Вы уверены?" name="delete-card" buttonText="Да">
       </PopupWithForm>
     </div>
   );
