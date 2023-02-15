@@ -1,15 +1,20 @@
-function Loader({isLoaded, error}) {
+function Loader({ isLoading, error }) {
   return (
-      <div className={`loader ${isLoaded ? 'hide' : 'show'}`}>
+    <div className={`loader ${isLoading ? 'show' : 'hide'}`}>
+      {error ? (
         <p>{error}</p>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-        <span className="loader__circle"></span>
-      </div>
+      ) : (
+        <div>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+          <span className="loader__circle"></span>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -1,44 +1,40 @@
-import {api} from '../utils/api';
-import {useEffect, useState} from 'react';
-import Card from './Card'
+import { api } from '../utils/api';
+import { useEffect, useState } from 'react';
+import Card from './Card';
 import Loader from './Loader';
 
-function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   const [userName, setUserName] = useState('');
   const [userDescription, setUserDescription] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
   const [cards, setCards] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loadingError, setLoadingError] = useState('')
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState('');
 
-
-  useEffect(()=> {
+  useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cards]) => {
         setUserName(user.name);
         setUserDescription(user.about);
         setUserAvatar(user.avatar);
         setCards(cards);
-
+        setIsLoading(false);
       })
       .catch((err) => {
-        setLoadingError(`Что-то пошло не так... (${err})`)
+        setLoadingError(`Что-то пошло не так... (${err})`);
         console.log(err);
-      }).finally(() => {
-        userName ? setIsLoaded(true) : setIsLoaded(true)
-    })
-  }, [])
+      });
+  }, []);
 
   return (
     <>
-      <Loader isLoaded={isLoaded} error={loadingError}/>
+      <Loader isLoading={isLoading} error={loadingError} />
 
-      <main className={`content ${isLoaded ? 'show' : 'hide'}`}>
+      <main className={`content ${isLoading ? 'hide' : 'show'}`}>
         <section className="profile">
           <div className="profile__avatar-container">
             <img src={userAvatar} alt="Аватарка" className="profile__avatar" />
-            <img onClick={onEditAvatar} className="profile__updavatar-button" src="/images/icon-pencil.svg"
-                 alt="edit-pencil"/>
+            <img onClick={onEditAvatar} className="profile__updavatar-button" src="/images/icon-pencil.svg" alt="edit-pencil" />
           </div>
 
           <div className="profile__info">
@@ -49,7 +45,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
           <button onClick={onAddPlace} type="button" className="profile__add-button opacity"></button>
         </section>
 
-        <Card cards={cards} onCardClick={onCardClick}/>
+        <Card cards={cards} onCardClick={onCardClick} />
       </main>
     </>
   );
