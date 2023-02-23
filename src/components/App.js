@@ -89,7 +89,7 @@ function App() {
     api
       .editProfile(user)
       .then(() => {
-        setCurrentUser(user);
+        setCurrentUser({ ...currentUser, name: user.name, about: user.about });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
