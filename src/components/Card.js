@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ cards, onCardClick }) {
+function Card({ cards, onCardClick, onCardLike }) {
   const { currentUser } = useContext(CurrentUserContext);
 
   return (
@@ -31,6 +31,7 @@ function Card({ cards, onCardClick }) {
                   <button
                     type="button"
                     className={cardLikeButtonClassName}
+                    onClick={() => onCardLike(card)}
                     aria-label="Лайк"
                   ></button>
                   <span className="card__like-counter">

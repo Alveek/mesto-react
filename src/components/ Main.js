@@ -1,7 +1,7 @@
-import { api } from "../utils/api";
 import { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import Loader from "./Loader";
+import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
@@ -9,6 +9,19 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // set later to true
   const [loadingError, setLoadingError] = useState("");
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+      // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+      const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+      // Обновляем стейт
+      setCards(newCards);
+    });
+  }
 
   useEffect(() => {
     api
@@ -59,7 +72,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
           ></button>
         </section>
 
-        <Card cards={cards} onCardClick={onCardClick} />
+        <Card
+          cards={cards}
+          onCardClick={onCardClick}
+          onCardLike={handleCardLike}
+        />
       </main>
     </>
   );
