@@ -11,17 +11,17 @@
   text-align: center;
   cursor: pointer;
   margin-top: 19px;
-  color: #FFFFFF;
-  transition: background .2s linear;
+  color: #ffffff;
+  transition: background 0.2s linear;
 }
 
 .form__button:hover {
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .form__button:disabled {
   color: #000000;
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
   border: 1px solid #000000;
   pointer-events: none;
   user-select: none;

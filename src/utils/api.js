@@ -12,16 +12,20 @@ class Api {
   }
 
   getUserInfo() {
-    return fetch(`${this._url}/users/me`, { headers: this._headers }).then((res) => this._checkResponse(res));
+    return fetch(`${this._url}/users/me`, { headers: this._headers }).then(
+      (res) => this._checkResponse(res)
+    );
   }
 
   getInitialCards() {
-    return fetch(`${this._url}/cards`, { headers: this._headers }).then((res) => this._checkResponse(res));
+    return fetch(`${this._url}/cards`, { headers: this._headers }).then((res) =>
+      this._checkResponse(res)
+    );
   }
 
   editProfile(data) {
     return fetch(`${this._url}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -32,7 +36,7 @@ class Api {
 
   addNewCard(card) {
     return fetch(`${this._url}/cards`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         name: card.name,
         link: card.link,
@@ -43,30 +47,30 @@ class Api {
 
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: this._headers,
     }).then((res) => this._checkResponse(res));
   }
 
-  likeCard(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: this._headers,
-    }).then((res) => this._checkResponse(res));
+  changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return fetch(`${this._url}/cards/${cardId}/likes`, {
+        method: "PUT",
+        headers: this._headers,
+      }).then((res) => this._checkResponse(res));
+    } else {
+      return fetch(`${this._url}/cards/${cardId}/likes`, {
+        method: "DELETE",
+        headers: this._headers,
+      }).then((res) => this._checkResponse(res));
+    }
   }
 
-  unlikeCard(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: this._headers,
-    }).then((res) => this._checkResponse(res));
-  }
-
-  updateAvatar(user) {
+  updateAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({
-        avatar: user.avatarLink,
+        avatar: data.avatar,
       }),
       headers: this._headers,
     }).then((res) => this._checkResponse(res));
@@ -74,9 +78,9 @@ class Api {
 }
 
 export const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-58',
+  url: "https://mesto.nomoreparties.co/v1/cohort-58",
   headers: {
-    authorization: '2cf1ae4c-ba37-45f7-aec7-ad1edf235188',
-    'Content-Type': 'application/json',
+    authorization: "2cf1ae4c-ba37-45f7-aec7-ad1edf235188",
+    "Content-Type": "application/json",
   },
 });

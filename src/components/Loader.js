@@ -1,6 +1,6 @@
 function Loader({ isLoading, error }) {
   return (
-    <div className={`loader ${isLoading ? 'show' : 'hide'}`}>
+    <div className={`loader ${isLoading ? "show" : "hide"}`}>
       {error ? (
         <p>{error}</p>
       ) : (

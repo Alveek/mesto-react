@@ -1,13 +1,14 @@
 .card__like-button_liked {
-  background: no-repeat center url('../../../../../public/images/icon-heart_liked.svg');
+  background: no-repeat center
+    url("../../../../../public/images/icon-heart_liked.svg");
   padding: 0;
   margin: 0;
   width: 32px;
   height: 19px;
   border: none;
   cursor: pointer;
-  transition: all .2s ease-in-out;
-  animation: scaled .5s;
+  transition: all 0.2s ease-in-out;
+  animation: scaled 0.5s;
 }
 
 @keyframes scaled {
