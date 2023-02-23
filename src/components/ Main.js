@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import Loader from "./Loader";
-import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
