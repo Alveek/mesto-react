@@ -3,7 +3,7 @@
   position: absolute;
   top: -40px;
   right: -40px;
-  background: url("../../../../public/images/icon-close.svg") no-repeat center;
+  background: url("../../../images/icon-close.svg") no-repeat center;
   width: 32px;
   height: 32px;
   cursor: pointer;

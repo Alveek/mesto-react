@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import iconPencil from "../../public/images/icon-pencil.svg";
+import iconPencil from "../images/icon-pencil.svg";
 import Card from "./Card";
 import Loader from "./Loader";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";

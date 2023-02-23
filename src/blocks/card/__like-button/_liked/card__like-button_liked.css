@@ -1,6 +1,6 @@
 .card__like-button_liked {
   background: no-repeat center
-    url("../../../../../public/images/icon-heart_liked.svg");
+    url("../../../../images/icon-heart_liked.svg");
   padding: 0;
   margin: 0;
   width: 32px;
