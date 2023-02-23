@@ -4,40 +4,18 @@ import Loader from "./Loader";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
   const { currentUser } = useContext(CurrentUserContext);
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // change later to true
   const [loadingError, setLoadingError] = useState("");
-
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
-      setCards(newCards);
-    });
-  }
-
-  function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
-      const newCards = cards.filter((c) => c._id !== card._id);
-      setCards(newCards);
-    });
-  }
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setLoadingError(`Что-то пошло не так... (${err})`);
-        console.log(err);
-      });
-  }, []);
 
   return (
     <>
@@ -78,8 +56,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         <Card
           cards={cards}
           onCardClick={onCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardLike={onCardLike}
+          onCardDelete={onCardDelete}
         />
       </main>
     </>
