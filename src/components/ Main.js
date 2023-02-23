@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import iconPencil from "../../public/images/icon-pencil.svg";
 import Card from "./Card";
 import Loader from "./Loader";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -31,7 +32,7 @@ function Main({
             <img
               onClick={onEditAvatar}
               className="profile__updavatar-button"
-              src="/images/icon-pencil.svg"
+              src={iconPencil}
               alt="edit-pencil"
             />
           </div>
