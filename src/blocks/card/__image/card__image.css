@@ -3,7 +3,7 @@
   height: 282px;
   object-fit: cover;
   object-position: top;
-  transition: opacity .2s linear;
+  transition: opacity 0.2s linear;
 }
 
 .card__image:hover {

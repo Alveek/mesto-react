@@ -7,7 +7,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   const { currentUser } = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // set later to true
+  const [isLoading, setIsLoading] = useState(true);
   const [loadingError, setLoadingError] = useState("");
 
   function handleCardLike(card) {
@@ -15,6 +15,13 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+      setCards(newCards);
+    });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then(() => {
+      const newCards = cards.filter((c) => c._id !== card._id);
       setCards(newCards);
     });
   }
@@ -72,6 +79,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
           cards={cards}
           onCardClick={onCardClick}
           onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
       </main>
     </>
