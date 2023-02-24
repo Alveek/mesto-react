@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import iconPencil from "../images/icon-pencil.svg";
 import Card from "./Card";
-import Loader from "./Loader";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
@@ -14,14 +13,10 @@ function Main({
   onCardDelete,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
-  const [isLoading, setIsLoading] = useState(false); // change later to true
-  const [loadingError, setLoadingError] = useState("");
 
   return (
     <>
-      <Loader isLoading={isLoading} error={loadingError} />
-
-      <main className={`content ${isLoading ? "hide" : "show"}`}>
+      <main className={`content`}>
         <section className="profile">
           <div className="profile__avatar-container">
             <img

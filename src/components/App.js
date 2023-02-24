@@ -9,6 +9,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Loader from "./Loader";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -17,25 +18,18 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
+  const [dataIsLoaded, setDataIsLoaded] = useState(false);
+  const [dataLoadingError, setDataLoadingError] = useState("");
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((user) => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
         setCurrentUser(user);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cards) => {
         setCards(cards);
-        // setIsLoading(false);
+        setDataIsLoaded(true);
       })
       .catch((err) => {
-        // setLoadingError(`Что-то пошло не так... (${err})`);
+        setDataLoadingError(`Что-то пошло не так... (${err})`);
         console.log(err);
       });
   }, []);
@@ -112,22 +106,28 @@ function App() {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <div className="page">
       <CurrentUserContext.Provider value={{ currentUser }}>
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+        {!dataIsLoaded ? (
+          <Loader error={dataLoadingError} />
+        ) : (
+          <Main
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+        )}
         <Footer />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
