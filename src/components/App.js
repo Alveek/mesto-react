@@ -34,7 +34,44 @@ function App() {
       });
   }, []);
 
-  function handleCardLike(card) {
+  const handleCloseByEsc = (e) => {
+    if (e.key === "Escape") {
+      closeAllPopups();
+    }
+  };
+
+  const handleCloseOnOverlay = (e) => {
+    if (
+      e.target.classList.contains("popup__close-button") ||
+      e.target.classList.contains("popup_opened")
+    ) {
+      closeAllPopups();
+    }
+  };
+
+  useEffect(() => {
+    if (
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      isEditAvatarPopupOpen ||
+      selectedCard
+    ) {
+      document.addEventListener("keydown", handleCloseByEsc);
+      document.addEventListener("mousedown", handleCloseOnOverlay);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleCloseByEsc);
+      document.removeEventListener("mousedown", handleCloseOnOverlay);
+    };
+  }, [
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isEditAvatarPopupOpen,
+    selectedCard,
+  ]);
+
+  const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     api
@@ -44,9 +81,9 @@ function App() {
         setCards(newCards);
       })
       .catch((err) => console.log(err));
-  }
+  };
 
-  function handleCardDelete(card) {
+  const handleCardDelete = (card) => {
     api
       .deleteCard(card._id)
       .then(() => {
@@ -54,7 +91,7 @@ function App() {
         setCards(newCards);
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   const handleCardClick = (data) => {
     setSelectedCard(data);

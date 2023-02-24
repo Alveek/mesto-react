@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import FormValidator from "../utils/FormValidator";
-import { validationConfig } from "../utils/utils";
 
 function PopupWithForm({
   title,
@@ -12,11 +10,6 @@ function PopupWithForm({
   children,
 }) {
   const currentForm = useRef(null);
-
-  useEffect(() => {
-    const form = new FormValidator(currentForm.current, validationConfig);
-    form.enableValidation();
-  }, [currentForm]);
 
   return (
     <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
