@@ -5,6 +5,7 @@ function PopupWithForm({
   name,
   isOpen,
   onClose,
+  isLoading,
   buttonText,
   onSubmit,
   children,
@@ -24,7 +25,7 @@ function PopupWithForm({
         >
           {children}
           <button className="form__button" type="submit">
-            {buttonText}
+            {isLoading ? "Сохранение" : buttonText}
           </button>
         </form>
         <button
