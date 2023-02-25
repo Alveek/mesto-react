@@ -1,9 +1,11 @@
 import PopupWithForm from "./ PopupWithForm";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
   const [cardName, setCardName] = useState("");
   const [cardLink, setCardLink] = useState("");
+  const cardNameInput = useRef(null);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +34,11 @@ function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
       <input
         className="form__input form__input_card_name"
         value={cardName}
-        onChange={(event) => setCardName(event.target.value)}
+        ref={cardNameInput}
+        onChange={(event) => {
+          setCardName(event.target.value);
+          setNameErrorMessage(cardNameInput.current.validationMessage);
+        }}
         id="card-name-input"
         name="cardName"
         type="text"
@@ -42,7 +48,13 @@ function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
         maxLength="40"
         required
       />
-      <span className="form__input-error card-name-input-error"></span>
+      <span
+        className={`form__input-error card-name-input-error ${
+          nameErrorMessage ? "form__input-error_active" : ""
+        }`}
+      >
+        {nameErrorMessage}
+      </span>
       <input
         className="form__input form__input_card_link"
         value={cardLink}

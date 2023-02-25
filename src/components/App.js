@@ -44,10 +44,7 @@ function App() {
   };
 
   const handleClickOnOverlay = (e) => {
-    if (
-      e.target.classList.contains("popup__close-button") ||
-      e.target.classList.contains("popup_opened")
-    ) {
+    if (e.target.classList.contains("popup_opened")) {
       closeAllPopups();
     }
   };

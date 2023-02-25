@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import iconPencil from "../images/icon-pencil.svg";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -48,12 +48,19 @@ function Main({
           ></button>
         </section>
 
-        <Card
-          cards={cards}
-          onCardClick={onCardClick}
-          onCardLike={onCardLike}
-          onTrashClick={onTrashClick}
-        />
+        <section className="card" aria-label="Карточки">
+          <ul className="card__items">
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onTrashClick={onTrashClick}
+              />
+            ))}
+          </ul>
+        </section>
       </main>
     </>
   );
