@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function PopupWithForm({
   title,
@@ -20,7 +20,7 @@ function PopupWithForm({
           ref={currentForm}
           name={name}
           onSubmit={onSubmit}
-          noValidate
+          // noValidate
         >
           {children}
           <button className="form__button" type="submit">
