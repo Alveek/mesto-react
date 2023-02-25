@@ -3,21 +3,23 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Header from "./ Header";
 import Main from "./ Main";
 import Footer from "./Footer";
-import PopupWithForm from "./ PopupWithForm";
 import { useEffect, useState } from "react";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import Loader from "./Loader";
+import ConfirmationPopup from "./ConfirmationPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(true);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
+  const [cardToDelete, setCardToDelete] = useState([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
   const [dataLoadingError, setDataLoadingError] = useState("");
 
@@ -40,7 +42,7 @@ function App() {
     }
   };
 
-  const handleCloseOnOverlay = (e) => {
+  const handleClickOnOverlay = (e) => {
     if (
       e.target.classList.contains("popup__close-button") ||
       e.target.classList.contains("popup_opened")
@@ -54,26 +56,27 @@ function App() {
       isEditProfilePopupOpen ||
       isAddPlacePopupOpen ||
       isEditAvatarPopupOpen ||
+      isConfirmationPopupOpen ||
       selectedCard
     ) {
       document.addEventListener("keydown", handleCloseByEsc);
-      document.addEventListener("mousedown", handleCloseOnOverlay);
+      document.addEventListener("mousedown", handleClickOnOverlay);
     }
 
     return () => {
       document.removeEventListener("keydown", handleCloseByEsc);
-      document.removeEventListener("mousedown", handleCloseOnOverlay);
+      document.removeEventListener("mousedown", handleClickOnOverlay);
     };
   }, [
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
     isEditAvatarPopupOpen,
+    isConfirmationPopupOpen,
     selectedCard,
   ]);
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -90,6 +93,7 @@ function App() {
         const newCards = cards.filter((c) => c._id !== card._id);
         setCards(newCards);
       })
+      .then(() => closeAllPopups())
       .catch((err) => console.log(err));
   };
 
@@ -113,6 +117,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsConfirmationPopupOpen(false);
     setSelectedCard(null);
   };
 
@@ -148,6 +153,11 @@ function App() {
       });
   };
 
+  const handleTrashClick = (card) => {
+    setCardToDelete(card);
+    setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
+  };
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={{ currentUser }}>
@@ -162,7 +172,7 @@ function App() {
             onCardClick={handleCardClick}
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
+            onTrashClick={handleTrashClick}
           />
         )}
         <Footer />
@@ -187,11 +197,12 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
         />
 
-        <PopupWithForm
-          title="Вы уверены?"
-          name="delete-card"
-          buttonText="Да"
-        ></PopupWithForm>
+        <ConfirmationPopup
+          isOpen={isConfirmationPopupOpen}
+          onClose={closeAllPopups}
+          onCardDelete={handleCardDelete}
+          card={cardToDelete}
+        />
       </CurrentUserContext.Provider>
     </div>
   );
