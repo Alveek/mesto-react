@@ -1,15 +1,15 @@
-import { api } from "../utils/api";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import Header from "./ Header";
-import Main from "./ Main";
-import Footer from "./Footer";
-import { useEffect, useState } from "react";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import Loader from "./Loader";
-import ConfirmationPopup from "./ConfirmationPopup";
+import { api } from '../utils/api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import { useEffect, useState } from 'react';
+import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
+import Loader from './Loader';
+import ConfirmationPopup from './ConfirmationPopup';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -21,7 +21,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [cardToDelete, setCardToDelete] = useState([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-  const [dataLoadingError, setDataLoadingError] = useState("");
+  const [dataLoadingError, setDataLoadingError] = useState('');
   const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
@@ -38,40 +38,28 @@ function App() {
   }, []);
 
   const handleCloseByEsc = (e) => {
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       closeAllPopups();
     }
   };
 
   const handleClickOnOverlay = (e) => {
-    if (e.target.classList.contains("popup_opened")) {
+    if (e.target.classList.contains('popup_opened')) {
       closeAllPopups();
     }
   };
 
   useEffect(() => {
-    if (
-      isEditProfilePopupOpen ||
-      isAddPlacePopupOpen ||
-      isEditAvatarPopupOpen ||
-      isConfirmationPopupOpen ||
-      selectedCard
-    ) {
-      document.addEventListener("keydown", handleCloseByEsc);
-      document.addEventListener("mousedown", handleClickOnOverlay);
+    if (isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isConfirmationPopupOpen || selectedCard) {
+      document.addEventListener('keydown', handleCloseByEsc);
+      document.addEventListener('mousedown', handleClickOnOverlay);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleCloseByEsc);
-      document.removeEventListener("mousedown", handleClickOnOverlay);
+      document.removeEventListener('keydown', handleCloseByEsc);
+      document.removeEventListener('mousedown', handleClickOnOverlay);
     };
-  }, [
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    isEditAvatarPopupOpen,
-    isConfirmationPopupOpen,
-    selectedCard,
-  ]);
+  }, [isEditProfilePopupOpen, isAddPlacePopupOpen, isEditAvatarPopupOpen, isConfirmationPopupOpen, selectedCard]);
 
   const handleCardClick = (data) => {
     setSelectedCard(data);
@@ -168,50 +156,18 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={{ currentUser }}>
         <Header />
-        {!dataIsLoaded ? (
-          <Loader error={dataLoadingError} />
-        ) : (
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onTrashClick={handleTrashClick}
-          />
-        )}
+        {!dataIsLoaded ? <Loader error={dataLoadingError} /> : <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onTrashClick={handleTrashClick} />}
         <Footer />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          isLoading={isLoading}
-          onUpdateUser={handleUpdateUser}
-        />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} isLoading={isLoading} onUpdateUser={handleUpdateUser} />
 
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          isLoading={isLoading}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} isLoading={isLoading} onUpdateAvatar={handleUpdateAvatar} />
 
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          isLoading={isLoading}
-          onAddPlace={handleAddPlaceSubmit}
-        />
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} isLoading={isLoading} onAddPlace={handleAddPlaceSubmit} />
 
-        <ConfirmationPopup
-          isOpen={isConfirmationPopupOpen}
-          onClose={closeAllPopups}
-          onCardDelete={handleCardDelete}
-          card={cardToDelete}
-        />
+        <ConfirmationPopup isOpen={isConfirmationPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} card={cardToDelete} />
       </CurrentUserContext.Provider>
     </div>
   );
