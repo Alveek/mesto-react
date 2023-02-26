@@ -1,11 +1,11 @@
-import PopupWithForm from "./ PopupWithForm";
-import { useEffect, useRef, useState } from "react";
+import PopupWithForm from './ PopupWithForm';
+import { useEffect, useRef, useState } from 'react';
 
 function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
-  const [cardName, setCardName] = useState("");
-  const [cardLink, setCardLink] = useState("");
+  const [cardName, setCardName] = useState('');
+  const [cardLink, setCardLink] = useState('');
   const cardNameInput = useRef(null);
-  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [nameErrorMessage, setNameErrorMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,20 +17,12 @@ function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
   };
 
   useEffect(() => {
-    setCardName("");
-    setCardLink("");
+    setCardName('');
+    setCardLink('');
   }, [onClose]);
 
   return (
-    <PopupWithForm
-      title="Новое место"
-      name="add-card"
-      isOpen={isOpen}
-      onClose={onClose}
-      isLoading={isLoading}
-      buttonText="Создать"
-      onSubmit={handleSubmit}
-    >
+    <PopupWithForm title="Новое место" name="add-card" isOpen={isOpen} onClose={onClose} isLoading={isLoading} buttonText="Создать" onSubmit={handleSubmit}>
       <input
         className="form__input form__input_card_name"
         value={cardName}
@@ -48,24 +40,8 @@ function AddPlacePopup({ isOpen, onClose, isLoading, onAddPlace }) {
         maxLength="40"
         required
       />
-      <span
-        className={`form__input-error card-name-input-error ${
-          nameErrorMessage ? "form__input-error_active" : ""
-        }`}
-      >
-        {nameErrorMessage}
-      </span>
-      <input
-        className="form__input form__input_card_link"
-        value={cardLink}
-        onChange={(event) => setCardLink(event.target.value)}
-        id="card-link-input"
-        name="cardLink"
-        type="url"
-        placeholder="Ссылка на картинку"
-        autoComplete="off"
-        required
-      />
+      <span className={`form__input-error card-name-input-error ${nameErrorMessage ? 'form__input-error_active' : ''}`}>{nameErrorMessage}</span>
+      <input className="form__input form__input_card_link" value={cardLink} onChange={(event) => setCardLink(event.target.value)} id="card-link-input" name="cardLink" type="url" placeholder="Ссылка на картинку" autoComplete="off" required />
       <span className="form__input-error card-link-input-error"></span>
     </PopupWithForm>
   );
